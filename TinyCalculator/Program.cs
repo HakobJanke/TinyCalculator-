@@ -1,33 +1,54 @@
-﻿Console.WriteLine("== Tiny calculator ==");
+﻿using System;
 
-int dividend = ReadNumber("Dividend");
-int divisor = ReadNumber("Divisor");
-
-if (divisor == 0)
+class Taschenrechner
 {
-    Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine("Divisor darf nicht 0 sein.");
-    Console.ResetColor();
-}
-else
-{
-    Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine($"{dividend} / {divisor} = {dividend / divisor}");
-    Console.ResetColor();
-}
-
-static int ReadNumber(string name)
-{
-    while (true)
+    static void Main()
     {
-        Console.Write($"{name}: ");
-        string input = Console.ReadLine();
-        if (int.TryParse(input, out int dividend))
+        double zahl1, zahl2, ergebnis = 0.0;
+        char operatorSymbol;
+
+        Console.Write("Gib die erste Zahl ein: ");
+        while (!double.TryParse(Console.ReadLine(), out zahl1))
         {
-            return dividend;
+            Console.WriteLine("Ungültige Eingabe. Bitte gib eine Zahl ein: ");
         }
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"{input} is not a number.");
-        Console.ResetColor();
+
+        Console.Write("Wähle eine Operation (+, -, *, /): ");
+        while (!char.TryParse(Console.ReadLine(), out operatorSymbol) || (operatorSymbol != '+' && operatorSymbol != '-' && operatorSymbol != '*' && operatorSymbol != '/'))
+        {
+            Console.WriteLine("Ungültige Eingabe. Bitte wähle eine gültige Operation: ");
+        }
+
+        Console.Write("Gib die zweite Zahl ein: ");
+        while (!double.TryParse(Console.ReadLine(), out zahl2))
+        {
+            Console.WriteLine("Ungültige Eingabe. Bitte gib eine Zahl ein: ");
+        }
+
+        switch (operatorSymbol)
+        {
+            case '+':
+                ergebnis = zahl1 + zahl2;
+                break;
+            case '-':
+                ergebnis = zahl1 - zahl2;
+                break;
+            case '*':
+                ergebnis = zahl1 * zahl2;
+                break;
+            case '/':
+                if (zahl2 != 0)
+                {
+                    ergebnis = zahl1 / zahl2;
+                }
+                else
+                {
+                    Console.WriteLine("Division durch Null ist nicht erlaubt.");
+                    return;
+                }
+                break;
+        }
+
+        Console.WriteLine("Das Ergebnis von {0} {1} {2} ist: {3}", zahl1, operatorSymbol, zahl2, ergebnis);
     }
 }
