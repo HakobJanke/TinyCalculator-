@@ -4,51 +4,80 @@ class Taschenrechner
 {
     static void Main()
     {
-        double zahl1, zahl2, ergebnis = 0.0;
-        char operatorSymbol;
+        double ergebnis = 0.0;
 
-        Console.Write("Gib die erste Zahl ein: ");
-        while (!double.TryParse(Console.ReadLine(), out zahl1))
+        while (true)
         {
-            Console.WriteLine("Ungültige Eingabe. Bitte gib eine Zahl ein: ");
-        }
+            Console.WriteLine("Aktuelles Ergebnis: " + ergebnis);
+            Console.Write("Möchtest du mit dem alten Ergebnis weiter rechnen? (j/n): ");
+            string weiterRechnenAntwort = Console.ReadLine();
 
-        Console.Write("Wähle eine Operation (+, -, *, /): ");
-        while (!char.TryParse(Console.ReadLine(), out operatorSymbol) || (operatorSymbol != '+' && operatorSymbol != '-' && operatorSymbol != '*' && operatorSymbol != '/'))
-        {
-            Console.WriteLine("Ungültige Eingabe. Bitte wähle eine gültige Operation: ");
-        }
+            if (weiterRechnenAntwort.ToLower() != "j")
+            {
+                Console.Write("Gib eine Zahl ein: ");
+                string eingabe = Console.ReadLine();
 
-        Console.Write("Gib die zweite Zahl ein: ");
-        while (!double.TryParse(Console.ReadLine(), out zahl2))
-        {
-            Console.WriteLine("Ungültige Eingabe. Bitte gib eine Zahl ein: ");
-        }
-
-        switch (operatorSymbol)
-        {
-            case '+':
-                ergebnis = zahl1 + zahl2;
-                break;
-            case '-':
-                ergebnis = zahl1 - zahl2;
-                break;
-            case '*':
-                ergebnis = zahl1 * zahl2;
-                break;
-            case '/':
-                if (zahl2 != 0)
+                double zahl;
+                if (double.TryParse(eingabe, out zahl))
                 {
-                    ergebnis = zahl1 / zahl2;
+                    ergebnis = zahl;
                 }
                 else
                 {
-                    Console.WriteLine("Division durch Null ist nicht erlaubt.");
-                    return;
+                    Console.WriteLine("Ungültige Eingabe. Bitte gib eine Zahl ein.");
+                    continue;
                 }
+            }
+
+            Console.Write("Wähle eine Operation (+, -, *, /): ");
+            string operation = Console.ReadLine();
+
+            double neueZahl;
+            Console.Write("Gib die nächste Zahl ein: ");
+            string eingabeNeueZahl = Console.ReadLine();
+
+            if (double.TryParse(eingabeNeueZahl, out neueZahl))
+            {
+                switch (operation)
+                {
+                    case "+":
+                        ergebnis += neueZahl;
+                        break;
+                    case "-":
+                        ergebnis -= neueZahl;
+                        break;
+                    case "*":
+                        ergebnis *= neueZahl;
+                        break;
+                    case "/":
+                        if (neueZahl != 0)
+                        {
+                            ergebnis /= neueZahl;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Division durch Null ist nicht erlaubt.");
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Ungültige Operation.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ungültige Eingabe. Bitte gib eine Zahl ein.");
+            }
+
+            Console.Write("Möchtest du weiter rechnen? (j/n): ");
+            string weiterRechnen = Console.ReadLine();
+
+            if (weiterRechnen.ToLower() != "j")
+            {
                 break;
+            }
         }
 
-        Console.WriteLine("Das Ergebnis von {0} {1} {2} ist: {3}", zahl1, operatorSymbol, zahl2, ergebnis);
+        Console.WriteLine("Endgültiges Ergebnis: " + ergebnis);
     }
 }
